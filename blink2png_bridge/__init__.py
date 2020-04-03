@@ -22,6 +22,7 @@ class Blink2pngBridge:
     config = {
         "xvfb-run_path": "xvfb-run",
         "execute_path": "blink2png",
+        "window_size": "1024 768",
         "save_path": os.getcwd()
     }
 
@@ -36,7 +37,24 @@ class Blink2pngBridge:
             if key in self.config:
                 self.config[key] = custom_config.get(key)
 
-    def capture(self, url, filename="capture.png"):
+    def set_save_path(self, path):
+        """
+        Set save path of snapshots.
+        :param path: string (ex. /tmp/snapshot/)
+        :return:
+        """
+        self.config["save_path"] = os.path.join(path)
+
+    def set_window_size(self, width, height):
+        """
+        Set picture size of snapshots.
+        :param width: integer
+        :param height: integer
+        :return:
+        """
+        self.config["window_size"] = "{} {}".format(width, height)
+
+    def save_screenshot(self, url, filename="capture.png"):
         """
         Take snapshot of web page with URL.
         :param url: string
@@ -45,6 +63,7 @@ class Blink2pngBridge:
         """
         xvfb_run = self.config.get("xvfb-run_path")
         execute_path = self.config.get("execute_path")
+        window_size = self.config.get("window_size")
         save_path = self.config.get("save_path")
 
-        subprocess.Popen([xvfb_run, execute_path, "-o", filename, url], cwd=save_path)
+        subprocess.Popen([xvfb_run, execute_path, "-g", window_size, "-o", filename, url], cwd=save_path)
