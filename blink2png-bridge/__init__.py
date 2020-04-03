@@ -12,3 +12,36 @@
 #
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+import os
+import subprocess
+
+
+class Blink2pngBridge:
+
+    config = {
+        "xvfb-run_path": "xvfb",
+        "execute_path": "blink2png",
+        "save_path": os.getcwd()
+    }
+
+    def __init__(self, custom_config=None):
+        """
+
+        :param custom_config:
+        """
+        if custom_config:
+            self.config = custom_config
+
+    def capture(self, url, filename="capture.png"):
+        """
+
+        :param url:
+        :param filename:
+        :return:
+        """
+        xvfb_run = self.config.get("xvfb-run_path")
+        execute_path = self.config.get("xvfb-run_path")
+        save_path = self.config.get("save_path")
+
+        subprocess.Popen([xvfb_run, execute_path, "-o", filename, url], cwd=save_path)
