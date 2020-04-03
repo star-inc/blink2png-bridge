@@ -32,7 +32,7 @@ setup(
     description='',
     author='Star Inc.',
     author_email='"Star Inc." <star_inc@aol.com>',
-    packages=['blink2png-bridge'],
+    packages=['blink2png_bridge'],
     zip_safe=True,
     include_package_data=True,
     package_dir=[],
