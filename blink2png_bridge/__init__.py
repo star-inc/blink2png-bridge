@@ -18,7 +18,6 @@ import subprocess
 
 
 class Blink2pngBridge:
-
     config = {
         "xvfb-run_path": "xvfb-run",
         "execute_path": "blink2png",
