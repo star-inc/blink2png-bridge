@@ -21,6 +21,8 @@ class Blink2pngBridge:
     config = {
         "xvfb-run_path": "xvfb-run",
         "execute_path": "blink2png",
+        "wait": "0",
+        "timeout": "10",
         "width": "1024",
         "height": "768",
         "save_path": os.getcwd()
@@ -35,7 +37,23 @@ class Blink2pngBridge:
             custom_config = {}
         for key in custom_config:
             if key in self.config:
-                self.config[key] = custom_config.get(key)
+                self.config[key] = str(custom_config.get(key))
+
+    def set_wait(self, seconds):
+        """
+        Set time to wait after loading before the screenshot is taken.
+        :param seconds: integer
+        :return:
+        """
+        self.config["wait"] = str(seconds)
+
+    def set_timeout(self, seconds):
+        """
+        Set time before the request will be canceled.
+        :param seconds: integer
+        :return:
+        """
+        self.config["timeout"] = str(seconds)
 
     def set_save_path(self, path):
         """
@@ -64,13 +82,20 @@ class Blink2pngBridge:
         """
         xvfb_run = self.config.get("xvfb-run_path")
         execute_path = self.config.get("execute_path")
+
+        wait = self.config.get("wait")
+        timeout = self.config.get("timeout")
+
         width = self.config.get("width")
         height = self.config.get("height")
+
         save_path = self.config.get("save_path")
 
         subprocess.Popen([
             xvfb_run,
             execute_path,
+            "-w", wait,
+            "-t", timeout,
             "-g", width, height,
             "-o", filename,
             url
