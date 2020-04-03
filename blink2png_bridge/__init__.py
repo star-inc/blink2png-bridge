@@ -20,7 +20,7 @@ import subprocess
 class Blink2pngBridge:
 
     config = {
-        "xvfb-run_path": "xvfb",
+        "xvfb-run_path": "xvfb-run",
         "execute_path": "blink2png",
         "save_path": os.getcwd()
     }
@@ -41,7 +41,7 @@ class Blink2pngBridge:
         :return:
         """
         xvfb_run = self.config.get("xvfb-run_path")
-        execute_path = self.config.get("xvfb-run_path")
+        execute_path = self.config.get("execute_path")
         save_path = self.config.get("save_path")
 
         subprocess.Popen([xvfb_run, execute_path, "-o", filename, url], cwd=save_path)
