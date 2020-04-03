@@ -27,17 +27,20 @@ class Blink2pngBridge:
 
     def __init__(self, custom_config=None):
         """
-
-        :param custom_config:
+        Configure custom config if existed.
+        :param custom_config: dict
         """
-        if custom_config:
-            self.config = custom_config
+        if custom_config is None:
+            custom_config = {}
+        for key in custom_config:
+            if key in self.config:
+                self.config[key] = custom_config.get(key)
 
     def capture(self, url, filename="capture.png"):
         """
-
-        :param url:
-        :param filename:
+        Take snapshot of web page with URL.
+        :param url: string
+        :param filename: string
         :return:
         """
         xvfb_run = self.config.get("xvfb-run_path")
