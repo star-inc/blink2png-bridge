@@ -22,7 +22,8 @@ class Blink2pngBridge:
     config = {
         "xvfb-run_path": "xvfb-run",
         "execute_path": "blink2png",
-        "window_size": "1024 768",
+        "width": "1024",
+        "height": "768",
         "save_path": os.getcwd()
     }
 
@@ -52,7 +53,8 @@ class Blink2pngBridge:
         :param height: integer
         :return:
         """
-        self.config["window_size"] = "{} {}".format(width, height)
+        self.config["width"] = str(width)
+        self.config["height"] = str(height)
 
     def save_screenshot(self, url, filename="capture.png"):
         """
@@ -63,7 +65,14 @@ class Blink2pngBridge:
         """
         xvfb_run = self.config.get("xvfb-run_path")
         execute_path = self.config.get("execute_path")
-        window_size = self.config.get("window_size")
+        width = self.config.get("width")
+        height = self.config.get("height")
         save_path = self.config.get("save_path")
 
-        subprocess.Popen([xvfb_run, execute_path, "-g", window_size, "-o", filename, url], cwd=save_path)
+        subprocess.Popen([
+            xvfb_run,
+            execute_path,
+            "-g", width, height,
+            "-o", filename,
+            url
+        ], cwd=save_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

@@ -24,7 +24,7 @@ with open(path.join(this_directory, 'docs', 'README.pypi.rst'), encoding='utf-8'
 
 setup(
     name="blink2png-bridge",
-    version='0.1.1',
+    version='0.1.2',
     url='http://github.com/star-inc/blink2png-bridge',
     license='GNU Lesser General Public License',
     long_description=long_description,
