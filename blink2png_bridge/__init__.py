@@ -14,11 +14,14 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import time
 import subprocess
 
 
 class Blink2pngBridge:
     config = {
+        "bridge_timeout": 10,
+        "silent": True,
         "xvfb-run_path": "xvfb-run",
         "execute_path": "blink2png",
         "wait": "0",
@@ -80,23 +83,25 @@ class Blink2pngBridge:
         :param filename: string
         :return:
         """
-        xvfb_run = self.config.get("xvfb-run_path")
-        execute_path = self.config.get("execute_path")
+        save_path = os.path.join(self.config.get("save_path"), filename)
 
-        wait = self.config.get("wait")
-        timeout = self.config.get("timeout")
+        task = [
+            self.config.get("xvfb-run_path"),
+            self.config.get("execute_path"),
+            "-w", self.config.get("wait"),
+            "-t", self.config.get("timeout"),
+            "-g", self.config.get("width"), self.config.get("height"),
+            "-o", save_path,
+        ]
 
-        width = self.config.get("width")
-        height = self.config.get("height")
+        popen_options = {}
+        if self.config.get("silent"):
+            popen_options["stdout"] = subprocess.PIPE
+            popen_options["stderr"] = subprocess.PIPE
 
-        save_path = self.config.get("save_path")
+        subprocess.Popen(task, **popen_options)
 
-        subprocess.Popen([
-            xvfb_run,
-            execute_path,
-            "-w", wait,
-            "-t", timeout,
-            "-g", width, height,
-            "-o", filename,
-            url
-        ], cwd=save_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        count, timeout = 0, self.config.get("bridge_timeout")
+        while not os.path.isfile(save_path):
+            assert count < timeout, "Timeout while checking snapshot existed"
+            time.sleep(1)
