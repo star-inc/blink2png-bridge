@@ -105,3 +105,4 @@ class Blink2pngBridge:
         while not os.path.isfile(save_path):
             assert count < timeout, "Timeout while checking snapshot existed"
             time.sleep(1)
+            count += 1
