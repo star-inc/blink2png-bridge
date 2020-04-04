@@ -95,7 +95,7 @@ class Blink2pngBridge:
         ]
 
         popen_options = {}
-        if self.config.get("silent"):
+        if self.config.get("silent") is True:
             popen_options["stdout"] = subprocess.PIPE
             popen_options["stderr"] = subprocess.PIPE
 
