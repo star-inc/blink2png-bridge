@@ -92,6 +92,7 @@ class Blink2pngBridge:
             "-t", self.config.get("timeout"),
             "-g", self.config.get("width"), self.config.get("height"),
             "-o", save_path,
+            url
         ]
 
         popen_options = {}
